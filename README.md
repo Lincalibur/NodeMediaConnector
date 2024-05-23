@@ -44,3 +44,17 @@ This Node.js application interacts with the Twitter, Spotify, and OMDb APIs to r
    git clone https://github.com/Lincalibur/WPR381-Assignment1.git
    cd your-repo-name
 
+## Created accounts
+1. Google:
+   Email - wpr381assignment@gmail.com
+   Password - WPR381Assignment!@#$
+
+2. X:
+   Username - wpr381Assignment (login)
+   Username - Wpr381A (@username)
+   Password - WPR381Assignment!@#$
+
+3. Spotify:
+   Email - wpr381assignment@gmail.com
+   Password - WPR381Assignment!@#$
+   Name - WPR-Assignment
