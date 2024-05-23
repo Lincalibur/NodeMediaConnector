@@ -42,5 +42,4 @@ This Node.js application interacts with the Twitter, Spotify, and OMDb APIs to r
 1. Clone the repository:
    ```sh
    git clone https://github.com/Lincalibur/WPR381-Assignment1.git
-   cd your-repo-name
 
