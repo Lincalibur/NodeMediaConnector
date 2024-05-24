@@ -1,30 +1,25 @@
-const express = require('express');
-const { TwitterApi } = require('twitter-api-v2');
-const router = express.Router();
-require('dotenv').config();
+// TwitterAPI.js
+const { getAccessToken } = require('./Oauth/TwitterOAuth.js');
 
-const client = new TwitterApi({
-  appKey: process.env.TWITTER_APP_KEY,
-  appSecret: process.env.TWITTER_APP_SECRET,
-  accessToken: process.env.TWITTER_ACCESS_TOKEN,
-  accessSecret: process.env.TWITTER_ACCESS_SECRET,
-});
+let clientPromise = getAccessToken();
 
-router.get('/tweetCountsRecentSearch/:query/:granularity', async (req, res) => {
-  const query = req.params.query;
-  const granularity = req.params.granularity;
-
+async function getTweets(username, count) {
   try {
-    const result = await client.v2.get('tweets/counts/recent', {
-      query,
-      granularity
+    const client = await clientPromise;
+    const user = await client.v2.userByUsername(username);
+    const userId = user.data.id;
+
+    const tweets = await client.v2.userTimeline(userId, {
+      max_results: count,
+      exclude: 'replies,retweets',
     });
 
-    res.json(result.data);
+    return tweets.data;
   } catch (error) {
-    console.error('Exception when calling tweetCountsRecentSearch:', error);
-    res.status(500).json({ error: error.message });
+    throw new Error(`Error fetching tweets: ${error.message}`);
   }
-});
+}
 
-module.exports = router;
+module.exports = {
+  getTweets,
+};
