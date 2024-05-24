@@ -1,5 +1,5 @@
 // TwitterAPI.js
-const { getAccessToken } = require('./Oauth/TwitterOAuth.js');
+const { getAccessToken } = require('./TwitterOAuth.js');
 
 let clientPromise = getAccessToken();
 
