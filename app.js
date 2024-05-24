@@ -18,16 +18,6 @@ async function displayTweets(userID) {
   }
 }
 
-async function getTweets(username, tweetCount) {
-  try {
-    const tweets = await fetchTweets(username, tweetCount);
-    return tweets;
-  } catch (error) {
-    console.error('Error fetching tweets:', error);
-    return null;
-  }
-}
-
 async function getSongDetails(songName) {
   try {
     const songDetails = await SpotifyAPI.getSongDetails(songName);
@@ -51,7 +41,7 @@ function promptUser() {
     if (choice === '1') {
       rl.question('Enter Twitter username: ', async (username) => {
         try {
-          const tweetsData = await fetchTweets(username);
+          const tweetsData = await displayTweets(username);
           if (tweetsData && tweetsData.data && tweetsData.data.length > 0) {
             console.log('Latest Tweets:');
             tweetsData.data.forEach(tweet => {
