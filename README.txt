@@ -10,7 +10,7 @@ The Oauth also needs to be tested before any request can be made.
 
 2. X:
    Username - wpr381Assignment (login)
-   Username - Wpr381A (@username)
+   Username - @Wpr381A (@username)
    Password - WPR381Assignment!@#$
    Website URL: https://wpr381.com/twitter/callback
    callback UrL: http://localhost:3000/twitter/callback

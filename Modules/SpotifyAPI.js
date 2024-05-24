@@ -1,47 +1,44 @@
-const express = require('express');
-const router = express.Router();
-require('dotenv').config();
-const axios = require('axios');
+// SpotifyAPI.js
 
-let spotifyAccessToken = null;
-
-const getSpotifyAccessToken = async () => {
-  const response = await axios.post('https://accounts.spotify.com/api/token', null, {
-    params: {
-      grant_type: 'client_credentials',
-    },
+// Function to get Spotify API access token
+async function getSpotifyToken() {
+  const response = await fetch('https://accounts.spotify.com/api/token', {
+    method: 'POST',
     headers: {
-      'Authorization': `Basic ${Buffer.from(`${process.env.SPOTIFY_CLIENT_ID}:${process.env.SPOTIFY_CLIENT_SECRET}`).toString('base64')}`,
       'Content-Type': 'application/x-www-form-urlencoded',
+      'Authorization': 'Basic ' + Buffer.from(`${process.env.SPOTIFY_CLIENT_ID}:${process.env.SPOTIFY_CLIENT_SECRET}`).toString('base64'),
+    },
+    body: 'grant_type=client_credentials',
+  });
+
+  const data = await response.json();
+  return data.access_token;
+}
+
+// Function to get song details from Spotify
+async function getSongDetails(songName) {
+  const token = await getSpotifyToken();
+  const response = await fetch(`https://api.spotify.com/v1/search?q=${encodeURIComponent(songName)}&type=track&limit=1`, {
+    headers: {
+      'Authorization': `Bearer ${token}`,
     },
   });
 
-  spotifyAccessToken = response.data.access_token;
-};
-
-router.get('/search/:query', async (req, res) => {
-  const query = req.params.query;
-
-  try {
-    if (!spotifyAccessToken) {
-      await getSpotifyAccessToken();
-    }
-
-    const response = await axios.get('https://api.spotify.com/v1/search', {
-      params: {
-        q: query,
-        type: 'track,artist,album',
-        limit: 10,
-      },
-      headers: {
-        'Authorization': `Bearer ${spotifyAccessToken}`,
-      },
-    });
-
-    res.json(response.data);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+  const data = await response.json();
+  if (data.tracks.items.length > 0) {
+    const track = data.tracks.items[0];
+    return {
+      artists: track.artists.map(artist => artist.name).join(', '),
+      song: track.name,
+      preview_url: track.preview_url,
+      album: track.album.name,
+    };
+  } else {
+    return null;
   }
-});
+}
 
-module.exports = router;
+// Export the functions
+module.exports = {
+  getSongDetails,
+};
