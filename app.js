@@ -1,7 +1,9 @@
 // app.js
+
 const SpotifyAPI = require('./Modules/SpotifyAPI');
-const fetchTweets = require('./Modules/TwitterAPI');
+const { getRequest } = require('./Modules/TwitterAPI');
 const readline = require('readline');
+require('dotenv').config();  // Load environment variables
 
 // Setup readline interface
 const rl = readline.createInterface({
@@ -9,10 +11,28 @@ const rl = readline.createInterface({
   output: process.stdout
 });
 
-async function displayTweets(userID) {
+async function fetchTweets() {
   try {
-    const tweets = await fetchTweets(userID);
-    console.log('Fetched tweets:', JSON.stringify(tweets, null, 2));
+    // Make the request
+    const response = await getRequest();
+    return response;
+  } catch (e) {
+    console.error('Error fetching data from Twitter API:', e.message);
+    return null;
+  }
+}
+
+async function displayTweets() {
+  try {
+    const tweets = await fetchTweets();
+    if (tweets && tweets.data && tweets.data.length > 0) {
+      console.log('Latest Tweets:');
+      tweets.data.forEach(tweet => {
+        console.log(`- ${tweet.text}`);
+      });
+    } else {
+      console.log('No tweets found or error fetching tweets.');
+    }
   } catch (error) {
     console.error('Error:', error);
   }
@@ -40,19 +60,7 @@ function promptUser() {
   rl.question('Enter your choice: ', async (choice) => {
     if (choice === '1') {
       rl.question('Enter Twitter username: ', async (username) => {
-        try {
-          const tweetsData = await displayTweets(username);
-          if (tweetsData && tweetsData.data && tweetsData.data.length > 0) {
-            console.log('Latest Tweets:');
-            tweetsData.data.forEach(tweet => {
-              console.log(`- ${tweet.text}`);
-            });
-          } else {
-            console.log('No tweets found or error fetching tweets.');
-          }
-        } catch (error) {
-          console.log('Error fetching tweets:', error.message);
-        }
+        await displayTweets(username);
         promptUser(); // Loop back to the main menu
       });
     } else if (choice === '2') {
@@ -73,7 +81,7 @@ function promptUser() {
       console.log('Exiting the application. Goodbye!');
       rl.close();
     } else {
-      console.log('Invalid choice. Please restart the application and choose either 1, 2, or 3.'); 
+      console.log('Invalid choice. Please choose either 1, 2, or 3.');
       promptUser(); 
     }
   });

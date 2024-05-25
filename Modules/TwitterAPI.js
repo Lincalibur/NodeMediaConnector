@@ -1,36 +1,31 @@
-// TwitterAPI.js
-// const fetch = require('node-fetch');
-require('dotenv').config();
+// Modules/twitterAPI.js
 
-const API_KEY = process.env.TWITTER_API_KEY;
+const axios = require('axios');
+require('dotenv').config();  // Load environment variables
 
-// Function to fetch tweets
-async function fetchTweets(userID) {
-  if (!API_KEY) {
-    throw new Error('API key is missing. Set TWITTER_API_KEY in your .env file.');
-  }
+const tweetIDs = '44196397';
+const params = 'tweet.fields=lang,author_id&user.fields=created_at';
+const endpointURL = `https://api.twitter.com/2/tweets?ids=${tweetIDs}&${params}`;
+const bearerToken = process.env.TWITTER_BEARER_TOKEN;
 
-  if (!userID) {
-    throw new Error('User ID is required to fetch tweets.');
-  }
-
-  const endpoint = `https://api.twitter.com/2/users/${userID}/tweets`;
-  const headers = {
-    'Authorization': `Bearer ${API_KEY}`
-  };
-
+async function getRequest() {
   try {
-    const response = await fetch(endpoint, { headers });
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    const data = await response.json();
-    return data;
+    console.log('Requesting data from Twitter API...');
+    const response = await axios.get(endpointURL, {
+      headers: {
+        Authorization: `Bearer ${bearerToken}`,
+        'User-Agent': "v2TweetLookupJS"
+      }
+    });
+
+    console.log('Data fetched successfully:', response.data);
+    return response.data;
   } catch (error) {
-    console.error('Error fetching tweets:', error);
-    throw error;
+    console.error('Error fetching data from Twitter API:', error.response ? error.response.status : error.message);
+    throw new Error('Unsuccessful request');
   }
 }
 
-// Export the function
-module.exports = fetchTweets;
+module.exports = {
+  getRequest
+};
