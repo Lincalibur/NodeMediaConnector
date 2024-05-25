@@ -28,3 +28,8 @@ This Node.js application interacts with the Twitter, Spotify, and OMDb APIs to r
 1. Clone the repository:
    ```sh
    git clone https://github.com/Lincalibur/WPR381-Assignment1.git
+
+## How to run Application:
+-**Open Terminal.**
+- **Run Command**: Node app.js
+- **Navigate Through Menu**: By selecting from 1,2 or 3 and answering the requests you will be able to demo the application.
