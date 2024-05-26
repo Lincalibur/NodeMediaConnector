@@ -1,6 +1,4 @@
-// SpotifyAPI.js
-
-// Function to get Spotify API access token
+// Function to get Spotify Bearer Token that is used for authorization.
 async function getSpotifyToken() {
   const response = await fetch('https://accounts.spotify.com/api/token', {
     method: 'POST',

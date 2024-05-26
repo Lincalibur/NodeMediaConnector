@@ -1,13 +1,12 @@
-// Modules/twitterAPI.js
-
 const axios = require('axios');
-require('dotenv').config();  // Load environment variables
+require('dotenv').config();
 
-const tweetIDs = '44196397';
-const params = 'tweet.fields=lang,author_id&user.fields=created_at';
-const endpointURL = `https://api.twitter.com/2/tweets?ids=${tweetIDs}&${params}`;
+const tweetIDs = '44196397'; //ID of spsific tweet
+const params = 'tweet.fields=lang,author_id&user.fields=created_at'; //Request parameters
+const endpointURL = `https://api.twitter.com/2/tweets?ids=${tweetIDs}&${params}`; //API endpoint.
 const bearerToken = process.env.TWITTER_BEARER_TOKEN;
 
+//Function to get bearer token that will be used for oauth 1.0
 async function getRequest() {
   try {
     console.log('Requesting data from Twitter API...');
