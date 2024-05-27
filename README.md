@@ -33,3 +33,6 @@ This Node.js application interacts with the Twitter, Spotify, and OMDb APIs to r
 -**Open Terminal.**
 - **Run Command**: Node app.js
 - **Navigate Through Menu**: By selecting from 1,2 or 3 and answering the requests you will be able to demo the application.
+
+## Installation To install the required dependencies: 
+run the following command: ```sh npm install axios@^1.7.2 dotenv@^16.4.5 express@^4.19.2 got@^14.3.0 inquirer@^9.2.22 node-fetch@^3.3.2 oauth@^0.10.0 twitter@^1.1.0 twitter-api-v2@^1.17.0
