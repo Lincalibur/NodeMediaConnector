@@ -2,7 +2,7 @@
 
 ## Overview
 
-This Node.js application interacts with the Twitter, Spotify, and OMDb APIs to retrieve and display specific information based on user input from the terminal. The application reads commands from the terminal and from a text file, processes these commands by making API calls, and outputs the results in a specified format.
+This Node.js application interacts with the Twitter, Spotify APIs to retrieve and display specific information based on user input from the terminal. The application reads commands from the terminal and from a text file, processes these commands by making API calls, and outputs the results in a specified format.
 
 ## Features
 
